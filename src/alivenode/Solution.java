@@ -13,9 +13,6 @@ public class Solution {
 
     static int max = Integer.MIN_VALUE;
     public static int maxPathSum(TreeNode root){
-        if(root == null){
-            return 0;
-        }
         pathSum(root);
         return max;
     }
@@ -24,17 +21,12 @@ public class Solution {
         if(root == null){
             return 0;
         }
-        if(root.left == null && root.right == null){
-            return root.val;
-        }
-        int left = pathSum(root.left);
-        int right = pathSum(root.right);
-        if(root.left != null && root.right != null){
-            max = Math.max(max, left + right + root.val);
-            return Math.max(left, right) + root.val;
-        }
-        return root.left == null ? right + root.val : left + root.val;
 
+        int left = Math.max(pathSum(root.left), 0);
+        int right = Math.max(pathSum(root.right),0);
+
+        max = Math.max(max, left + right + root.val);
+        return Math.max(left, right) + root.val;
 
     }
     public static void main(String[] args) {
