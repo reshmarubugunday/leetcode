@@ -30,6 +30,7 @@ public class Solution {
         // append numbers from i+1 to ch.length - 1 in reverse order
         for(int k=ch.length-1; k>i; k--){
             st.append(ch[k]);
+
         }
 
         return st.toString();
