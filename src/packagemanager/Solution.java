@@ -16,7 +16,7 @@ import java.util.HashMap;
 *
 * */
 public class Solution {
-    static HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+    static HashMap<String, List<String>> map = new HashMap<>();
     public static void main(String[] args) {
 
         map.put("A",new ArrayList<>(Arrays.asList("B", "C")));
@@ -26,10 +26,9 @@ public class Solution {
     }
 
     public static List<String> installApps(List<String> input){
-        Queue<String> q = new ArrayDeque<>();
         List<String> result = new ArrayList<>();
         Map<String, Boolean> visited = new HashMap<>();
-        q.addAll(input);
+        Queue<String> q = new ArrayDeque<>(input);
 
         while(!q.isEmpty()){
             String val = q.poll();
