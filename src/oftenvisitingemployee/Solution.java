@@ -33,8 +33,10 @@ import java.io.*;
 import java.util.*;
 
 public class Solution {
-    Map<String, List<Integer>> timeMap = new HashMap<>();
-
+    Map<String, List<Integer>> timeMap;
+    Solution(){
+        timeMap = new HashMap<>();
+    }
     public Map<String, List<Integer>> oftenVisitingEmployees(String[][] badgeTimes){
         Map<String, List<Integer>> result = new HashMap<>();
         for (String[] badgeTime : badgeTimes) {
@@ -57,10 +59,9 @@ public class Solution {
         int i = 0;
         List<Integer> timeList = new ArrayList<>();
         while(i < times.size()){
-            int startTime = times.get(i);
-            int endTime = startTime + 100;
+            int endTime = times.get(i) + 100;
             int j = i;
-            while(j < times.size() && times.get(j) >= startTime && times.get(j) <= endTime){
+            while(j < times.size() && times.get(j) <= endTime){
                 timeList.add(times.get(j));
                 j++;
             }
