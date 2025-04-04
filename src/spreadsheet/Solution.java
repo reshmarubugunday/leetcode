@@ -1,5 +1,6 @@
 package spreadsheet;
 /*
+Company:  Sigma Computing
  * Click `Run` to execute the snippet below!
 
 
