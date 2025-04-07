@@ -14,55 +14,47 @@ If no celebrity was found, return "None"
 import java.util.*;
 
 public class Solution {
-    Map<String, Person> whoIKnow;
-    Map<String, Set<String>> whoKnowMe;
-    Set<String> potentialCelebrities;
-    int numberOfPeople;
 
-    class Person{
-        String name;
-        Set<String> peopleIKnow;
-
-        Person(String name, String[] peopleIKnow){
-            this.name = name;
-            this.peopleIKnow = new HashSet<>();
-            this.peopleIKnow.addAll(Arrays.asList(peopleIKnow));
-        }
-    }
+    Map<String, Set<String>> knownMap;
 
     Solution(String[] people, String[][] knownPeople){
-        this.whoIKnow = new HashMap<>();
-        this.whoKnowMe = new HashMap<>();
-        this.potentialCelebrities = new HashSet<>();
-        this.numberOfPeople = people.length;
-
+        this.knownMap = new HashMap<>();
         for(int i=0; i<people.length; i++){
-            whoIKnow.put(people[i], new Person(people[i], knownPeople[i]));
-            if(knownPeople[i].length == 0){
-                potentialCelebrities.add(people[i]);
-            }
-            for(String p: knownPeople[i]){
-                whoKnowMe.putIfAbsent(p, new HashSet<>());
-                whoKnowMe.get(p).add(people[i]);
-            }
-            whoKnowMe.putIfAbsent(people[i], new HashSet<>());
+            knownMap.putIfAbsent(people[i], new HashSet<>());
+            knownMap.get(people[i]).addAll(List.of(knownPeople[i]));
         }
     }
 
-    public String FindCelebrity(){
-        for(String p : potentialCelebrities){
-            if(whoKnowMe.get(p).size() == numberOfPeople - 1){
-                return p;
+    public boolean knows(String a, String b){
+        return knownMap.containsKey(a) && knownMap.get(a).contains(b);
+    }
+
+    public String FindCelebrity(String[] people){
+        String candidate = people[0];
+        for(int i=1; i<people.length; i++){
+            if(knows(candidate, people[i])){
+                candidate = people[i];
             }
         }
-        return "None";
+
+        for(String p: people){
+            if(candidate.equals(p)){
+                continue;
+            }
+            if(knows(candidate, p) || !knows(p, candidate)){
+                return "None";
+            }
+        }
+        return candidate;
     }
+
+
 
     public static void main(String[] args) {
-        String[] people = new String[]{"Brian", "Sam", "Lady Gaga", "Amy", "Justin", "Alex"};
-        String[][] knownPeople = new String[][]{{"Sam", "Amy", "Lady Gaga"}, {"Justin", "Brian", "Lady Gaga"},{}, {"Brian", "Justin", "Lady Gaga"}, {"Sam", "Brian", "Amy", "Lady Gaga"}, {"Lady Gaga"}};
+        String[] people = new String[]{"Brian", "Sam","Alex" , "Amy", "Justin", "Lady Gaga"};
+        String[][] knownPeople = new String[][]{{"Sam", "Amy", "Lady Gaga"}, {"Justin", "Brian", "Lady Gaga"},{"Lady Gaga"}, {"Brian", "Justin", "Lady Gaga"}, {"Sam", "Brian", "Amy", "Lady Gaga"}, {}};
         Solution s = new Solution(people, knownPeople);
-        System.out.println("Celebrity in the group: " + s.FindCelebrity());
+        System.out.println("Celebrity in the group: " + s.FindCelebrity(people));
 
     }
 }
