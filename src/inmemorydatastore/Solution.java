@@ -1,5 +1,6 @@
 package inmemorydatastore;
 /*
+Company: Rippling
 Q1
 Design and implement an in-memory key value data store.
 This data store should be able to support some basic operations such as Get, Set and Delete for string keys and values.

@@ -1,5 +1,6 @@
 package oftenvisitingemployee;
 /*
+Company: PayPal
 We are working on a security system for a badged-access room in our company's building.
 
 We want to find employees who badged into our secured room unusually often. We have an unordered list of names and entry times over a single day. Access times are given as numbers up to four digits in length using 24-hour time, such as "800" or "2250".

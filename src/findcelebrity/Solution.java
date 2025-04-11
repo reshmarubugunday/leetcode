@@ -24,7 +24,7 @@ public class Solution {
             knownMap.get(people[i]).addAll(List.of(knownPeople[i]));
         }
     }
-
+    // a knows b
     public boolean knows(String a, String b){
         return knownMap.containsKey(a) && knownMap.get(a).contains(b);
     }

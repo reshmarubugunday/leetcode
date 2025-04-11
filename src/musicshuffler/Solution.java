@@ -2,6 +2,7 @@ package musicshuffler;
 
 import java.util.*;
 // """
+// Company: StackAdapt
 // Implement a music shuffling data structure with a Shuffle() method
 
 // Inputs:

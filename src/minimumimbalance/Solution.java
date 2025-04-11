@@ -1,6 +1,6 @@
 package minimumimbalance;
 /*
-Amazon OA
+Company: Amazon OA
 Code Question 2
 
 A customer ordered n items from Amazon’s online shopping app. Each item has a fragility value which denotes

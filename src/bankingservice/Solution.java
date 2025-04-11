@@ -1,5 +1,6 @@
 package bankingservice;
 /**
+ Company: Airbnb
  Bank account system
 
  - To implement a class

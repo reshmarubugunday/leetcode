@@ -28,111 +28,85 @@ Set - gab, cat, bag , nurses
 result - [[gab, bag], [bag, gab]]
 */
 
-import java.io.*;
-        import java.util.*;
-        import java.text.*;
-        import java.math.*;
-        import java.util.regex.*;
+import java.util.*;
 
 public class Solution {
 
     public static void main(String[] args) {
-        System.out.println(isPalindrome("bob"));
-        System.out.println(isPalindrome("gig"));
-        System.out.println(isPalindrome("abba"));
-        System.out.println(isPalindrome("firetruck"));
 
-        List<String> input = new LinkedList<>();
-        input.add("gab");
-        input.add("cat") ;
-        input.add("bag");
-        input.add("alpha");
-        input.add("nurses");
-        input.add("race") ;
-        input.add("car") ;
-        input.add("run") ;
-        input.add("nu");
-        input.add("aba");
+        List<String> input1 = new ArrayList<>(List.of("gab", "cat", "bag", "alpha", "nurses", "race", "car", "run", "nu", "aba"));
+        List<List<String>> output1 = palindromePairs(input1);
+        List<List<String>> expected1 = List.of(List.of("gab", "bag"), List.of("bag", "gab"), List.of("race", "car"), List.of("nurses", "run"));
+        System.out.println("output1: " + output1 + "expected1: " + expected1);
+        System.out.println(output1.equals(expected1));
 
-        List<String> input1 = new LinkedList<>();
-        input.add("aaba");
-        input.add("a") ;
-        input.add("baa");
-        input.add("aa");
-        input.add("ba");
+        List<String> input2 = new ArrayList<>(List.of("aaba", "a", "baa", "aa", "ba"));
+        List<List<String>> output2 = palindromePairs(input2);
+        List<List<String>> expected2 =  List.of(List.of("aaba", "a"), List.of("aaba", "baa"), List.of("aa", "baa"), List.of("a", "ba"));
+        System.out.println("output2: " + output1 + "expected2: " + expected1);
+        System.out.println(output2.equals(expected2));
 
+        List<String> input3 = new ArrayList<>(List.of("abcd","dcba","lls","s","sssll"));
+        List<List<String>> output3 = palindromePairs(input3);
+        System.out.println(output3.equals(List.of(List.of("abcd", "dcba"), List.of("dcba", "abcd"), List.of("s", "lls"), List.of("lls", "sssll"))));
 
-        List<List<String>> output = palindromPairs(input);
+        List<String> input4 = new ArrayList<>(List.of("bat","tab","cat"));
+        List<List<String>> output4 = palindromePairs(input4);
+        System.out.println(output4.equals(List.of(List.of("bat", "tab"), List.of("tab", "bat"))));
 
-        for(List<String> list:output){
-            System.out.println(list);
-        }
+        List<String> input5 = new ArrayList<>(List.of("a",""));
+        List<List<String>> output5 = palindromePairs(input5);
+        System.out.println(output5.equals(List.of(List.of("a", ""), List.of("", "a"))));
 
-        List<List<String>> output1 = palindromPairs(input);
-        for(List<String> list:output1){
-            System.out.println(list);
-        }
     }
 
-    public static boolean isPalindrome(String str){
-        char[] chars = str.toCharArray();
-        int i=0;
-        int j=chars.length-1;
-        while(i<chars.length && j>0 && i<j){
-            if(chars[i] == chars[j]){
-                i++;
-                j--;
-            } else {
-                return false;
-            }
-        }
-        return true;
-    }
+    public static List<List<String>> palindromePairs(List<String> words){
+        HashMap<String, Integer> reversedMap = new HashMap<>();
+        List<List<String>> result = new ArrayList<>();
 
-    public static List<List<String>> palindromPairs(List<String> words){
-        HashMap<String, String> map = new HashMap<>();
-        List<List<String>> result = new LinkedList<>();
-
-        // this part will add the exact pairs that can be concatenated together to make a palindrom
-        for(String str:words){
-            StringBuilder input1 = new StringBuilder();
-            input1.append(str);
-            input1.reverse();
-            if(map.containsKey(input1.toString())){
-                List<String> temp = new LinkedList<>();
-                temp.add(str);
-                temp.add(input1.toString());
-                // complaining with error here.
-                result.add(temp);
-                List<String> temp1 = new LinkedList<>();
-                temp1.add(input1.toString());
-                temp1.add(str);
-                result.add(temp1);
-                map.put(str, "");
-            } else {
-                map.put(str, "");
-            }
+        // this part will add the exact pairs that can be concatenated together to make a palindrome
+        for(int i=0; i<words.size(); i++) {
+            String reverse = new StringBuilder(words.get(i)).reverse().toString();
+            reversedMap.put(reverse, i);
         }
 
-        // this part will leave out those pairs and cover the other words and check if it is a palindrome when concatenated with each word in the list
-        for(String str:words){
-            for(String s:map.keySet()){
-                StringBuilder input1 = new StringBuilder();
-                input1.append(s);
-                input1.reverse();
-                if(str.equals(input1.toString())){
-                    continue;
-                } else{
-                    if (isPalindrome(str+s)){
-                        List<String> temp = new LinkedList<>();
-                        temp.add(str);
-                        temp.add(s);
-                        result.add(temp);
+        for(int i=0; i<words.size(); i++){
+            String word = words.get(i);
+            for(int cut = 0; cut < word.length(); cut++){
+                String prefix = word.substring(0,cut);
+                String suffix = word.substring(cut);
+
+                if(isPalindrome(prefix)){
+                    Integer j = reversedMap.get(suffix);
+
+                    if(j != null && j != i){
+                        result.add(List.of(words.get(j), words.get(i)));
+                    }
+                }
+
+                if(isPalindrome(suffix)){
+                    Integer j = reversedMap.get(prefix);
+
+                    if(j != null && j != i){
+                        result.add(List.of(words.get(i), words.get(j)));
                     }
                 }
             }
         }
+
         return result;
+    }
+
+    public static boolean isPalindrome(String s){
+        int i = 0, j = s.length() - 1 ;
+        while(i < j){
+            if(s.charAt(i) != s.charAt(j)){
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
     }
 
 }

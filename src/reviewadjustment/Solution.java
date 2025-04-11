@@ -1,6 +1,6 @@
 package reviewadjustment;
 /*
-Amazon OA
+Company: Amazon OA
 Code Question 1
 
 The marketing team at Amazon is experimenting with the number of reviews for each product.
